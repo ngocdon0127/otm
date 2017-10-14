@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- CryptoJS -->
+    <!-- <script type="text/javascript" src="/javascripts/crypto-js.js"></script> -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
+          <h2>Form Upload</h2>
+          <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="return false" id="form-upload">
+            <div class="form-group">
+              <label for="id">id:</label>
+              <input type="id" class="form-control" id="id" placeholder="Enter id" name="id" readonly="readonly">
+            </div>
+            <div class="form-group">
+              <label class="radio-inline">
+                <input type="radio" id="radio-type-text" name="data-type" value="text" onclick="selectType(this)">Text
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="radio-type-attachments" name="data-type" value="attachments" onclick="selectType(this)">File
+              </label>
+            </div>
+            <div class="form-group">
+              <label for="text">Text:</label>
+              <textarea class="form-control" id="text" placeholder="Enter text" name="text"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="attachments">Attachments:</label>
+              <input type="file" disabled="disabled" class="form-control" id="attachments" placeholder="Enter attachments" name="attachments" multiple="multiple">
+            </div>
+            <button class="btn btn-default" onclick="submitForm()">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function(){
+        $.ajax({
+          url: '/id',
+          type: 'GET',
+          success: function (res) {
+            if (res.status == 'success') {
+              $('#id').val(res.id)
+            } else {
+              console.log(res);
+              alert('Có lỗi xảy ra')
+            }
+          },
+          error: function (err) {
+            console.log(err);
+            try {
+              var err = JSON.parse(err.responseText);
+              alert(err.error)
+            } catch (e) {
+              alert('Có lỗi xảy ra.')
+              console.log(e);
+            }
+          }
+        })
+        $('#attachments').attr('disabled', true);
+        $('#radio-type-text').prop('checked', true);
+      });
+    </script>
+    <script>
+      var type = 'text';
+      function selectType(radio) {
+        var val = radio.value;
+        switch (val) {
+          case 'text':
+            $('#text').attr('disabled', false);
+            $('#attachments').attr('disabled', true);
+            type = 'text'
+            break;
+          case 'attachments':
+            $('#text').attr('disabled', true);
+            $('#attachments').attr('disabled', false);
+            type = 'attachments';
+            break;
+          default: 
+            alert('Đừng nghịch')
+            return;
+        }
+      }
+
+      function submitForm() {
+        var fd = new FormData(document.getElementById('form-upload'));
+        switch (type) {
+          case 'text':
+            fd.delete('attachments')
+            break;
+          case 'attachments':
+            fd.delete('text');
+            break;
+          default:
+            alert('cc');
+            return;
+        }
+        $.ajax({
+          url: '/upload',
+          type: 'POST',
+          contentType: false,
+          mimeType: 'multipart/form-data',
+          data: fd,
+          processData: false,
+          success: function (res) {
+            console.log(res);
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
