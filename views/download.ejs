@@ -32,8 +32,14 @@
           </div>
           <button class="btn btn-default" onclick="downloadAll()">Download All</button>
         </div>
+        <div class="col-lg-2 col-md-2 col-xs-12 col-sm-2">
+          <div id="circle-progress" style="display: none"></div>
+        </div>
       </div>
     </div>
+
+    <script src="/javascripts/FileSaver.js"></script>
+    <script src="/javascripts/circle-progress/circle-progress.min.js"></script>
     
     <script>
       function downloadAll() {
@@ -53,6 +59,9 @@
                   var a = document.createElement('a');
                   a.href = '#';
                   a.setAttribute('class', 'list-group-item');
+                  a.setAttribute('data-download-url', '/dl/' + res.attachments[i].filename);
+                  a.setAttribute('data-original-name', res.attachments[i].originalname);
+                  a.addEventListener('click', download);
                   a.innerHTML = res.attachments[i].originalname;
                   document.getElementById('list-attachments').appendChild(a)
                 }
@@ -72,6 +81,68 @@
             }
           }
         })
+      }
+
+      function download(evt) {
+        console.log(evt.target);
+        $('#circle-progress').circleProgress({
+          value: 0,
+          size: 80,
+          fill: {
+            gradient: ["green"]
+          },
+          animation: false
+        });
+        $('#circle-progress').fadeIn(10);
+        var xhr = new XMLHttpRequest();
+        // var xhr = $.ajaxSettings.xhr();
+        xhr.onprogress = function (e) {
+          // For downloads
+          if (e.lengthComputable) {
+              $('#circle-progress').circleProgress('value', e.loaded / e.total)
+          }
+        };
+        xhr.upload.onprogress = function (e) {
+          // For uploads
+          if (e.lengthComputable) {
+          }
+        };
+
+        xhr.onreadystatechange = function () {
+          if ((xhr.readyState == 4) && (xhr.status == 200)){
+            var disposition = xhr.getResponseHeader('Content-Disposition');
+            disposition = decodeURIComponent(disposition);
+            var fields = disposition.split([';']);
+            console.log(disposition);
+            console.log(fields);
+            var fileName = evt.target.getAttribute('data-original-name');
+            fileName = fileName.replace(/[^a-zA-Z]+$/g, '');
+            var type = xhr.getResponseHeader('Content-Type');
+            // console.log(type);
+            var blob = new Blob([xhr.response], {type: type});
+            saveAs(blob, fileName);
+            setTimeout(function () {
+              $('#circle-progress').fadeOut(500);
+            }, 500)
+            // arr[index].checked = false;
+            // progressBar.style.width = (index + 1) / totalFile * 100 + '%';
+            // progressBar.innerHTML = (index + 1) + ' / ' + totalFile;
+            // progressBar.setAttribute('aria-valuenow', index);
+            // if (index >= totalFile - 1){
+            //   setTimeout(function () {
+            //     $(progressBarContainer).fadeOut(1000);
+            //   }, 500)
+            // }
+            // setTimeout(function () {
+            //   download(index + 1, fields_form);
+            // }, 100);
+          }
+        }
+
+        xhr.open('GET', evt.target.getAttribute('data-download-url'), true);
+        xhr.responseType = 'arraybuffer';
+        xhr.send();
+
       }
     </script>
   </body>

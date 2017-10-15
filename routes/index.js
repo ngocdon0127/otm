@@ -67,6 +67,16 @@ router.get('/record/:id', (req, res) => {
   }
 })
 
+router.get('/dl/:filename', (req, res) => {
+  if (fs.existsSync(path.join(__dirname, '../public/uploads', req.params.filename))) {
+    return res.download(path.join(__dirname, '../public/uploads', req.params.filename))
+  }
+  return res.status(404).json({
+    status: 'error',
+    error: 'File not found'
+  })
+})
+
 
 
 module.exports = router;
