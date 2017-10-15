@@ -14,7 +14,7 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offet-1">
           <h2>Download</h2>
           <div class="form-group">
             <label for="id">id:</label>
@@ -32,6 +32,8 @@
           </div>
           <button class="btn btn-default" onclick="downloadAll()">Download All</button>
         </div>
+      </div>
+      <div class="row">
         <div class="col-lg-2 col-md-2 col-xs-12 col-sm-2">
           <div id="circle-progress" style="display: none"></div>
         </div>
@@ -54,6 +56,7 @@
             console.log(res)
             if (res.status == 'success') {
               $('#text').val(res.text)
+              document.getElementById('list-attachments').innerHTML = ''
               if (res.attachments instanceof Array) {
                 for(var i = 0; i < res.attachments.length; i++) {
                   var a = document.createElement('a');
@@ -61,7 +64,7 @@
                   a.setAttribute('class', 'list-group-item');
                   a.setAttribute('data-download-url', '/dl/' + res.attachments[i].filename);
                   a.setAttribute('data-original-name', res.attachments[i].originalname);
-                  a.addEventListener('click', download);
+                  a.addEventListener('click', downloadHandler);
                   a.innerHTML = res.attachments[i].originalname;
                   document.getElementById('list-attachments').appendChild(a)
                 }
@@ -83,8 +86,13 @@
         })
       }
 
-      function download(evt) {
+      function downloadHandler(evt) {
         console.log(evt.target);
+        download(evt.target)
+
+      }
+
+      function download(a) {
         $('#circle-progress').circleProgress({
           value: 0,
           size: 80,
@@ -115,7 +123,7 @@
             var fields = disposition.split([';']);
             console.log(disposition);
             console.log(fields);
-            var fileName = evt.target.getAttribute('data-original-name');
+            var fileName = a.getAttribute('data-original-name');
             fileName = fileName.replace(/[^a-zA-Z]+$/g, '');
             var type = xhr.getResponseHeader('Content-Type');
             // console.log(type);
@@ -139,10 +147,9 @@
           }
         }
 
-        xhr.open('GET', evt.target.getAttribute('data-download-url'), true);
+        xhr.open('GET', a.getAttribute('data-download-url'), true);
         xhr.responseType = 'arraybuffer';
         xhr.send();
-
       }
     </script>
   </body>

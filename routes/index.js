@@ -57,7 +57,7 @@ router.get('/record/:id', (req, res) => {
     return res.status(200).json({
       status: 'success',
       text: data[req.params.id].text,
-      attachments: data[req.params.id].files,
+      attachments: data[req.params.id].attachments,
     })
   } else {
     return res.status(400).json({
