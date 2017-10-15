@@ -10,7 +10,8 @@ var upload               = multer({dest: UPLOAD_DESTINATION});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  let data = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json')));
+  res.render('index', { title: 'Express', records: data });
 });
 
 router.get('/upload', (req, res) => {
@@ -19,6 +20,17 @@ router.get('/upload', (req, res) => {
 
 router.get('/download', (req, res) => {
   return res.render('download')
+})
+
+router.get('/download/:id', (req, res) => {
+  let data = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json')));
+  if (!(req.params.id in data)) {
+    return res.status(400).json({
+      status: 'error',
+      error: 'Invalid ID'
+    })
+  }
+  return res.render('download', {id: req.params.id});
 })
 
 router.get('/id', (req, res, next) => {

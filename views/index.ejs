@@ -2,17 +2,35 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="/stylesheets/bootstrap.min.css"> <!-- load bootstrap css -->
-		<link rel="stylesheet" href="/stylesheets/style.css">
-		<link rel="stylesheet" type="text/css" href="/app/asset/css/main.css">
-		<script src="/javascripts/jquery.js"></script>
-		<script src="/javascripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-		<!-- CryptoJS -->
-		<script type="text/javascript" src="/javascripts/crypto-js.js"></script>
+    <!-- CryptoJS -->
+    <!-- <script type="text/javascript" src="/javascripts/crypto-js.js"></script> -->
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+  <body style="padding-top: 100px">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offet-1">
+          <div class="form-group">
+            <label for="ids">Ids:</label>
+            <div class="list-group" id="list-ids">
+            <!-- <a href="#" class="list-group-item">First item</a> -->
+            <% for (let rid in records) { 
+              let record = records[rid]
+              %>
+              <a href="/download/<%= rid %>" class="list-group-item"><%= rid %> <span class="badge"><%= record.attachments ? record.attachments.length : 0 %> attachments </span></a>
+            <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offet-1">
+          <a class="btn btn-success" href="/upload" target="new">Upload</a>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

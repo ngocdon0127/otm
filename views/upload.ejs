@@ -11,8 +11,13 @@
     <!-- CryptoJS -->
     <!-- <script type="text/javascript" src="/javascripts/crypto-js.js"></script> -->
   </head>
-  <body>
+  <body style="padding-top: 100px">
     <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
+          <a href="/" class="btn btn-primary">Home</a>
+        </div>
+      </div>
       <div class="row">
         <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
           <h2>Form Upload</h2>
@@ -37,7 +42,7 @@
               <label for="attachments">Attachments:</label>
               <input type="file" disabled="disabled" class="form-control" id="attachments" placeholder="Enter attachments" name="attachments" multiple="multiple">
             </div>
-            <button class="btn btn-default" onclick="submitForm()">Submit</button>
+            <button class="btn btn-success" onclick="submitForm()">Submit</button>
           </form>
         </div>
       </div>
