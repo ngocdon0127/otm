@@ -25,6 +25,11 @@
       .tabs > li.active > a, .tabs > li.active > a:hover, .tabs > li.active > a:focus {
         background-color: #F3F6F9;
       }
+
+      .list-group-item {
+        text-decoration: underline !important;
+        color: #00F !important;
+      }
     </style>
 
     <!-- CryptoJS -->
@@ -60,7 +65,15 @@
                 <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="return false" id="form-upload">
                   <div class="form-group">
                     <label for="cid">cid:</label>
-                    <input type="cid" class="form-control" id="cid" name="cid" readonly="readonly">
+                    <div class="input-group">
+                      <input type="cid" class="form-control" id="cid" name="cid" readonly="readonly">
+                      <div class="input-group-btn">
+                        <button class="btn btn-default" onclick="refreshHandler()">
+                          <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                      </div>
+                    </div>
+                    
                   </div>
                   <div class="form-group">
                     <label class="radio-inline">
@@ -82,6 +95,11 @@
               </div>
               <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
                 <button class="btn btn-success" onclick="submitForm()">Submit</button>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center;">
+                <div id="circle-progress-upload" style="display: "></div>
               </div>
             </div>
           </div>
@@ -120,16 +138,16 @@
                 <!-- <button class="btn btn-default" onclick="downloadAll()">Download All</button> -->
               </div>
             </div>
+            <div class="row" style="margin-top: 20px">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center;">
+                <div id="circle-progress-download" style="display: "></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="row" style="margin-top: 20px">
-        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
-          <div id="circle-progress" style="display: "></div>
-        </div>
-      </div>
     </div>
+    <script src="/javascripts/cookie.js"></script>
     <script src="/javascripts/circle-progress/circle-progress.min.js"></script>
     <script src="/javascripts/upload.js"></script>
     <script src="/javascripts/FileSaver.js"></script>

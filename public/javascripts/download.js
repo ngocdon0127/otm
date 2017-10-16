@@ -62,7 +62,7 @@ function downloadHandler(evt) {
 }
 
 function download(a) {
-  $('#circle-progress').circleProgress({
+  $('#circle-progress-download').circleProgress({
     value: 0,
     size: 80,
     fill: {
@@ -70,13 +70,13 @@ function download(a) {
     },
     animation: false
   });
-  $('#circle-progress').fadeIn(10);
+  $('#circle-progress-download').fadeIn(10);
   var xhr = new XMLHttpRequest();
   // var xhr = $.ajaxSettings.xhr();
   xhr.onprogress = function (e) {
     // For downloads
     if (e.lengthComputable) {
-        $('#circle-progress').circleProgress('value', e.loaded / e.total)
+        $('#circle-progress-download').circleProgress('value', e.loaded / e.total)
     }
   };
   xhr.upload.onprogress = function (e) {
@@ -99,7 +99,7 @@ function download(a) {
       var blob = new Blob([xhr.response], {type: type});
       saveAs(blob, fileName);
       setTimeout(function () {
-        $('#circle-progress').fadeOut(500);
+        $('#circle-progress-download').fadeOut(500);
       }, 500)
       // arr[index].checked = false;
       // progressBar.style.width = (index + 1) / totalFile * 100 + '%';
@@ -146,7 +146,7 @@ function connect(c) {
   })
 }
 
-// $('#circle-progress').circleProgress({
+// $('#circle-progress-download').circleProgress({
 //     value: 0,
 //     size: 80,
 //     fill: {
@@ -154,4 +154,4 @@ function connect(c) {
 //     },
 //     animation: false
 //   });
-//   $('#circle-progress').fadeIn(10);
+//   $('#circle-progress-download').fadeIn(10);

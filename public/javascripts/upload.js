@@ -1,6 +1,33 @@
 var u = Math.floor(Math.random() * 1000000);
 console.log(u);
 $(document).ready(function(){
+  loadCid();
+  $('#file').attr('disabled', true);
+  $('#radio-type-text').prop('checked', true);
+});
+
+function loadCid() {
+  try {
+    var cookie = getCookie('tesa');
+    cookie = JSON.parse(cookie);
+    console.log(cookie);
+    if (cookie.cid) {
+      $('#cid').val(cookie.cid)
+    } else {
+      refreshCid();
+    }
+  } catch (e) {
+    // console.log(e);
+    refreshCid();
+  }
+  
+}
+
+function refreshHandler(evt) {
+  refreshCid();
+}
+
+function refreshCid() {
   $.ajax({
     // url: '/id',
     url: `http://192.168.29.121:8181/getcode?u=${u}`,
@@ -13,7 +40,8 @@ $(document).ready(function(){
       //   alert('Có lỗi xảy ra')
       // }
       console.log(res);
-      $('#cid').val(res)
+      $('#cid').val(res);
+      setCookie('tesa', JSON.stringify({cid: res}), 7)
     },
     error: function (err) {
       console.log(err);
@@ -26,9 +54,8 @@ $(document).ready(function(){
       }
     }
   })
-  $('#file').attr('disabled', true);
-  $('#radio-type-text').prop('checked', true);
-});
+}
+
 var type = 'text';
 function selectType(radio) {
   var val = radio.value;
@@ -67,7 +94,7 @@ function submitForm() {
       return;
   }
   console.log(`http://192.168.29.121:8181/data?u=${u}&c=${$('#cid').val()}&t=${type == 'text' ? 0 : 1}`);
-  $('#circle-progress').circleProgress({
+  $('#circle-progress-upload').circleProgress({
     value: 0,
     size: 80,
     fill: {
@@ -75,7 +102,7 @@ function submitForm() {
     },
     animation: false
   });
-  $('#circle-progress').fadeIn(10);
+  $('#circle-progress-upload').fadeIn(10);
   // $.ajax({
   //   // url: '/upload',
   //   url: `http://192.168.29.121:8181/data?u=${u}&c=${$('#cid').val()}&t=${type == 'text' ? 0 : 1}`,
@@ -99,13 +126,13 @@ function submitForm() {
   xhr.onprogress = function (e) {
     // For downloads
     // if (e.lengthComputable) {
-    //     $('#circle-progress').circleProgress('value', e.loaded / e.total)
+    //     $('#circle-progress-upload').circleProgress('value', e.loaded / e.total)
     // }
   };
   xhr.upload.onprogress = function (e) {
     // For uploads
     if (e.lengthComputable) {
-      $('#circle-progress').circleProgress('value', e.loaded / e.total)
+      $('#circle-progress-upload').circleProgress('value', e.loaded / e.total)
     }
   };
 
@@ -123,7 +150,7 @@ function submitForm() {
       // var blob = new Blob([xhr.response], {type: type});
       // saveAs(blob, fileName);
       setTimeout(function () {
-        $('#circle-progress').fadeOut(500);
+        $('#circle-progress-upload').fadeOut(500);
       }, 500)
       // arr[index].checked = false;
       // progressBar.style.width = (index + 1) / totalFile * 100 + '%';
