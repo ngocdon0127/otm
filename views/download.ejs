@@ -12,17 +12,21 @@
   <body style="padding-top: 100px">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
-          <a href="/upload" class="btn btn-success">Upload</a>
-          <a href="/" class="btn btn-primary">Home</a>
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1" style="text-align: center">
+          <!-- <a href="/" class="btn btn-primary">Home</a> -->
+          <a href="/upload" class="btn btn-default">Sender</a>
+          <button class="btn btn-success" onclick="connectHandler(this)">Receiver</button>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offet-1">
-          <h2>Download</h2>
           <div class="form-group">
+              <label for="c">ConnectId:</label>
+              <input type="c" class="form-control" id="c" onchange="connectHandler(this)" placeholder="Enter c" name="c">
+            </div>
+          <div class="form-group" style="display: none">
             <label for="id">id:</label>
-            <input type="id" class="form-control" id="id" onchange="loadHandler(this)" placeholder="Enter id" name="id">
+            <input type="text" class="form-control" id="id" onchange="loadHandler(this)" placeholder="Enter id" name="id">
           </div>
           <div class="form-group">
             <label for="text">Text:</label>
@@ -34,7 +38,7 @@
               <!-- <a href="#" class="list-group-item">First item</a> -->
             </div>
           </div>
-          <button class="btn btn-default" onclick="downloadAll()">Download All</button>
+          <!-- <button class="btn btn-default" onclick="downloadAll()">Download All</button> -->
         </div>
       </div>
       <div class="row">
@@ -48,37 +52,47 @@
     <script src="/javascripts/circle-progress/circle-progress.min.js"></script>
     
     <script>
-      function downloadAll() {
-        console.log(1)
-      }
+      // function downloadAll() {
+      //   console.log(1)
+      // }
 
       function loadHandler(input) {
         load(input.value);
       }
       function load(id) {
-        console.log(id);
+        // console.log(id);
+        // console.log(`http://192.168.29.121:8181/data?u=1&o=${id}`);
         $.ajax({
-          url: `/record/${id}`,
+          // url: `/record/${id}`,
+          url: `http://192.168.29.121:8181/data?u=1&o=${id}`,
           type: 'GET',
           success: function (res) {
-            console.log(res)
-            if (res.status == 'success') {
-              $('#text').val(res.text)
-              document.getElementById('list-attachments').innerHTML = ''
-              if (res.attachments instanceof Array) {
-                for(var i = 0; i < res.attachments.length; i++) {
-                  var a = document.createElement('a');
-                  a.href = '#';
-                  a.setAttribute('class', 'list-group-item');
-                  a.setAttribute('data-download-url', '/dl/' + res.attachments[i].filename);
-                  a.setAttribute('data-original-name', res.attachments[i].originalname);
-                  a.addEventListener('click', downloadHandler);
-                  a.innerHTML = res.attachments[i].originalname;
-                  document.getElementById('list-attachments').appendChild(a)
-                }
-              }
-            } else {
-              return alert('Có lỗi xảy ra')
+            // console.log(res)
+            res = JSON.parse(res);
+            $('#text').val(res.text)
+            document.getElementById('list-attachments').innerHTML = ''
+            // if (res.attachments instanceof Array) {
+            //   for(var i = 0; i < res.attachments.length; i++) {
+            //     var a = document.createElement('a');
+            //     a.href = '#';
+            //     a.setAttribute('class', 'list-group-item');
+            //     a.setAttribute('data-download-url', '/dl/' + res.attachments[i].filename);
+            //     a.setAttribute('data-original-name', res.attachments[i].originalname);
+            //     a.addEventListener('click', downloadHandler);
+            //     a.innerHTML = res.attachments[i].originalname;
+            //     document.getElementById('list-attachments').appendChild(a)
+            //   }
+            // }
+            if (res.fileName) {
+              var a = document.createElement('a');
+              a.href = '#';
+              a.setAttribute('class', 'list-group-item');
+              a.setAttribute('data-download-url', `http://192.168.29.121:8181/static?u=1&o=${id}&f=${res.fileName}`);
+              a.setAttribute('data-original-name', res.fileName);
+              a.addEventListener('click', downloadHandler);
+              a.innerHTML = (res.fileName.length < 20) ? res.fileName : (res.fileName.substring(0, 15) + '... ' + res.fileName.substring(res.fileName.lastIndexOf('.')));
+              document.getElementById('list-attachments').appendChild(a)
+              console.log('inserted');
             }
           },
           error: function (err) {
@@ -167,5 +181,35 @@
         load('<%= id %>');
       </script>
     <% } %>
+
+    <script>
+      function connectHandler(btn) {
+        connect(btn.value);
+      }
+
+      function connect(c) {
+        // console.log(`http://192.168.29.121:8181/connect?u=1&c=${c}`);
+        $.ajax({
+          url: `http://192.168.29.121:8181/connect?u=1&c=${c}`,
+          type: 'GET',
+          success: function (res) {
+            // console.log(res);
+            $('#id').val(res);
+            load(res)
+            setInterval(function () {
+              // console.log(`loading ${res}`);
+              load(res)
+            }, 2000)
+          },
+          error: function (err) {
+            console.log(err);
+            alert('error')
+          }
+        })
+      }
+    </script>
+    <script>
+      // connectHandler();
+    </script>
   </body>
 </html>

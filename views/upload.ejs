@@ -9,18 +9,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- CryptoJS -->
-    <!-- <script type="text/javascript" src="/javascripts/crypto-js.js"></script> -->
+    <script type="text/javascript" src="https://baotangvn.online/javascripts/crypto-js.js"></script>
   </head>
   <body style="padding-top: 100px">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
-          <a href="/" class="btn btn-primary">Home</a>
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1" style="text-align: center">
+          <a href="/upload" class="btn btn-success">Sender</a>
+          <a href="/download" class="btn btn-default">Receiver</a>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
-          <h2>Form Upload</h2>
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1" >
           <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="return false" id="form-upload">
             <div class="form-group">
               <label for="id">id:</label>
@@ -31,34 +31,47 @@
                 <input type="radio" id="radio-type-text" name="data-type" value="text" onclick="selectType(this)">Text
               </label>
               <label class="radio-inline">
-                <input type="radio" id="radio-type-attachments" name="data-type" value="attachments" onclick="selectType(this)">File
+                <input type="radio" id="radio-type-file" name="data-type" value="file" onclick="selectType(this)">File
               </label>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="wrap-text">
               <label for="text">Text:</label>
               <textarea class="form-control" id="text" placeholder="Enter text" name="text"></textarea>
             </div>
-            <div class="form-group">
-              <label for="attachments">Attachments:</label>
-              <input type="file" disabled="disabled" class="form-control" id="attachments" placeholder="Enter attachments" name="attachments" multiple="multiple">
+            <div class="form-group" id="wrap-file" style="display: none">
+              <label for="file">file:</label>
+              <input type="file" disabled="disabled" class="form-control" id="file" placeholder="Enter file" name="file" multiple="multiple">
             </div>
-            <button class="btn btn-success" onclick="submitForm()">Submit</button>
           </form>
+        </div>
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1">
+          <button class="btn btn-primary" onclick="submitForm()">Submit</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offet-1">
+          <div id="circle-progress" style="display: none"></div>
         </div>
       </div>
     </div>
+    <script src="/javascripts/circle-progress/circle-progress.min.js"></script>
     <script>
+      var u = Math.floor(Math.random() * 1000000);
+      console.log(u);
       $(document).ready(function(){
         $.ajax({
-          url: '/id',
+          // url: '/id',
+          url: `http://192.168.29.121:8181/getcode?u=${u}`,
           type: 'GET',
           success: function (res) {
-            if (res.status == 'success') {
-              $('#id').val(res.id)
-            } else {
-              console.log(res);
-              alert('Có lỗi xảy ra')
-            }
+            // if (res.status == 'success') {
+            //   $('#id').val(res.id)
+            // } else {
+            //   console.log(res);
+            //   alert('Có lỗi xảy ra')
+            // }
+            console.log(res);
+            $('#id').val(res)
           },
           error: function (err) {
             console.log(err);
@@ -71,7 +84,7 @@
             }
           }
         })
-        $('#attachments').attr('disabled', true);
+        $('#file').attr('disabled', true);
         $('#radio-type-text').prop('checked', true);
       });
     </script>
@@ -82,13 +95,17 @@
         switch (val) {
           case 'text':
             $('#text').attr('disabled', false);
-            $('#attachments').attr('disabled', true);
+            $('#file').attr('disabled', true);
+            $('#wrap-file').fadeOut(1);
+            $('#wrap-text').fadeIn(200);
             type = 'text'
             break;
-          case 'attachments':
+          case 'file':
             $('#text').attr('disabled', true);
-            $('#attachments').attr('disabled', false);
-            type = 'attachments';
+            $('#file').attr('disabled', false);
+            $('#wrap-text').fadeOut(1);
+            $('#wrap-file').fadeIn(200);
+            type = 'file';
             break;
           default: 
             alert('Đừng nghịch')
@@ -100,29 +117,93 @@
         var fd = new FormData(document.getElementById('form-upload'));
         switch (type) {
           case 'text':
-            fd.delete('attachments')
+            fd.delete('file')
             break;
-          case 'attachments':
+          case 'file':
             fd.delete('text');
             break;
           default:
             alert('cc');
             return;
         }
-        $.ajax({
-          url: '/upload',
-          type: 'POST',
-          contentType: false,
-          mimeType: 'multipart/form-data',
-          data: fd,
-          processData: false,
-          success: function (res) {
-            console.log(res);
+        console.log(`http://192.168.29.121:8181/data?u=${u}&c=${$('#id').val()}&t=${type == 'text' ? 0 : 1}`);
+        $('#circle-progress').circleProgress({
+          value: 0,
+          size: 80,
+          fill: {
+            gradient: ["green"]
           },
-          error: function (err) {
-            console.log(err)
+          animation: false
+        });
+        $('#circle-progress').fadeIn(10);
+        // $.ajax({
+        //   // url: '/upload',
+        //   url: `http://192.168.29.121:8181/data?u=${u}&c=${$('#id').val()}&t=${type == 'text' ? 0 : 1}`,
+        //   type: 'POST',
+        //   contentType: false,
+        //   mimeType: 'multipart/form-data',
+        //   data: fd,
+        //   processData: false,
+        //   success: function (res) {
+        //     console.log(res);
+        //     alert('success')
+        //   },
+        //   error: function (err) {
+        //     console.log(err)
+        //     alert('error')
+        //   }
+        // })
+
+        var xhr = new XMLHttpRequest();
+        // var xhr = $.ajaxSettings.xhr();
+        xhr.onprogress = function (e) {
+          // For downloads
+          // if (e.lengthComputable) {
+          //     $('#circle-progress').circleProgress('value', e.loaded / e.total)
+          // }
+        };
+        xhr.upload.onprogress = function (e) {
+          // For uploads
+          if (e.lengthComputable) {
+            $('#circle-progress').circleProgress('value', e.loaded / e.total)
           }
-        })
+        };
+
+        xhr.onreadystatechange = function () {
+          if ((xhr.readyState == 4) && (xhr.status == 200)){
+            // var disposition = xhr.getResponseHeader('Content-Disposition');
+            // disposition = decodeURIComponent(disposition);
+            // var fields = disposition.split([';']);
+            // console.log(disposition);
+            // console.log(fields);
+            // var fileName = a.getAttribute('data-original-name');
+            // fileName = fileName.replace(/[^a-zA-Z]+$/g, '');
+            // var type = xhr.getResponseHeader('Content-Type');
+            // // console.log(type);
+            // var blob = new Blob([xhr.response], {type: type});
+            // saveAs(blob, fileName);
+            setTimeout(function () {
+              $('#circle-progress').fadeOut(500);
+            }, 500)
+            // arr[index].checked = false;
+            // progressBar.style.width = (index + 1) / totalFile * 100 + '%';
+            // progressBar.innerHTML = (index + 1) + ' / ' + totalFile;
+            // progressBar.setAttribute('aria-valuenow', index);
+            // if (index >= totalFile - 1){
+            //   setTimeout(function () {
+            //     $(progressBarContainer).fadeOut(1000);
+            //   }, 500)
+            // }
+            // setTimeout(function () {
+            //   download(index + 1, fields_form);
+            // }, 100);
+          }
+        }
+
+        xhr.open('POST', `http://192.168.29.121:8181/data?u=${u}&c=${$('#id').val()}&t=${type == 'text' ? 0 : 1}`, true);
+        // xhr.open('POST', `/upload`, true);
+        // xhr.responseType = 'arraybuffer';
+        xhr.send(fd);
       }
     </script>
   </body>

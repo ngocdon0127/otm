@@ -41,7 +41,7 @@ router.get('/id', (req, res, next) => {
   })
 })
 
-router.post('/upload', upload.fields([{name: 'attachments'}]), (req, res) => {
+router.post('/upload', upload.fields([{name: 'file'}]), (req, res) => {
   console.log(req.body);
   console.log(req.files);
   let data = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json')));
