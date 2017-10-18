@@ -11,7 +11,7 @@ function load(id) {
   // console.log(`http://192.168.29.121:8181/data?u=1&o=${id}`);
   $.ajax({
     // url: `/record/${id}`,
-    url: `http://192.168.29.121:8181/data?u=1&o=${id}`,
+    url: `${HOST}/data?u=1&o=${id}`,
     type: 'GET',
     success: function (res) {
       // console.log(res)
@@ -37,7 +37,7 @@ function load(id) {
         a.setAttribute('data-download-url', `http://192.168.29.121:8181/static?u=1&o=${id}&f=${res.fileName}`);
         a.setAttribute('data-original-name', res.fileName);
         a.addEventListener('click', downloadHandler);
-        a.innerHTML = (res.fileName.length < 20) ? res.fileName : (res.fileName.substring(0, 15) + '... ' + res.fileName.substring(res.fileName.lastIndexOf('.')));
+        a.innerHTML = (res.fileName.length < 50) ? res.fileName : (res.fileName.substring(0, 50) + '... ' + res.fileName.substring(res.fileName.lastIndexOf('.')));
         document.getElementById('list-attachments').appendChild(a)
         console.log('inserted');
       }
@@ -128,7 +128,7 @@ function connectHandler(btn) {
 function connect(c) {
   // console.log(`http://192.168.29.121:8181/connect?u=1&c=${c}`);
   $.ajax({
-    url: `http://192.168.29.121:8181/connect?u=1&c=${c}`,
+    url: `${HOST}/connect?u=1&c=${c}`,
     type: 'GET',
     success: function (res) {
       // console.log(res);

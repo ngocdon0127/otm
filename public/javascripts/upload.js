@@ -1,3 +1,4 @@
+var HOST = 'http://139.59.109.25:8181'
 var u = Math.floor(Math.random() * 1000000);
 console.log(u);
 $(document).ready(function(){
@@ -30,7 +31,7 @@ function refreshHandler(evt) {
 function refreshCid() {
   $.ajax({
     // url: '/id',
-    url: `http://192.168.29.121:8181/getcode?u=${u}`,
+    url: `${HOST}/getcode?u=${u}`,
     type: 'GET',
     success: function (res) {
       // if (res.status == 'success') {
@@ -93,7 +94,7 @@ function submitForm() {
       alert('cc');
       return;
   }
-  console.log(`http://192.168.29.121:8181/data?u=${u}&c=${$('#cid').val()}&t=${type == 'text' ? 0 : 1}`);
+  console.log(`${HOST}/data?u=${u}&c=${$('#cid').val()}&t=${type == 'text' ? 0 : 1}`);
   $('#circle-progress-upload').circleProgress({
     value: 0,
     size: 80,
@@ -167,7 +168,7 @@ function submitForm() {
     }
   }
 
-  xhr.open('POST', `http://192.168.29.121:8181/data?u=${u}&c=${$('#cid').val()}&t=${type == 'text' ? 0 : 1}`, true);
+  xhr.open('POST', `${HOST}/data?u=${u}&c=${$('#cid').val()}&t=${type == 'text' ? 0 : 1}`, true);
   // xhr.open('POST', `/upload`, true);
   // xhr.responseType = 'arraybuffer';
   xhr.send(fd);
