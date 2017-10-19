@@ -133,6 +133,10 @@ function connect(c) {
     type: 'GET',
     success: function (res) {
       // console.log(res);
+      // $('#glyphicon-ok').removeClass('text-danger')
+      $('#btn-connect').removeClass('btn-danger')
+        // $('#glyphicon-ok').addClass('text-success')
+      $('#btn-connect').addClass('btn-success')
       $('#id').val(res);
       load(res)
       setInterval(function () {
@@ -141,6 +145,10 @@ function connect(c) {
       }, 2000)
     },
     error: function (err) {
+      // $('#glyphicon-ok').removeClass('text-success')
+      $('#btn-connect').removeClass('btn-success')
+      // $('#glyphicon-ok').addClass('text-danger')
+      $('#btn-connect').addClass('btn-danger')
       console.log(err);
       // alert('error')
     }
