@@ -1,3 +1,10 @@
+let originalCL = console.log;
+console.log = function (obj) {
+  originalCL(obj)
+  let t = $('#debug').text();
+  t += '\n=====\n' + JSON.stringify(obj);
+  $('#debug').text(t)
+}
 var HOST = 'http://139.59.109.25:8181'
 var u = Math.floor(Math.random() * 1000000);
 console.log(u);
@@ -151,9 +158,12 @@ function submitForm() {
     if ((xhr.readyState == 4) && (xhr.status == 200)){
       // var disposition = xhr.getResponseHeader('Content-Disposition');
       // disposition = decodeURIComponent(disposition);
+      console.log('uploaded');
       setTimeout(function () {
         $('#circle-progress-upload').fadeOut(500);
       }, 500)
+    } else if (xhr.readyState == 4) {
+      console.log(xhr.status);
     }
   }
 
