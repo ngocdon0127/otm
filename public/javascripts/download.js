@@ -34,7 +34,7 @@ function load(id) {
         var a = document.createElement('a');
         a.href = '#';
         a.setAttribute('class', 'list-group-item');
-        a.setAttribute('data-download-url', `http://192.168.29.121:8181/static?u=1&o=${id}&f=${res.fileName}`);
+        a.setAttribute('data-download-url', `${HOST}/static?u=1&o=${id}&f=${res.fileName}`);
         a.setAttribute('data-original-name', res.fileName);
         a.addEventListener('click', downloadHandler);
         a.innerHTML = (res.fileName.length < 50) ? res.fileName : (res.fileName.substring(0, 50) + '... ' + res.fileName.substring(res.fileName.lastIndexOf('.')));
