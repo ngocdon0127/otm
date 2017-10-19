@@ -46,9 +46,10 @@ function load(id) {
       console.log(err);
       try {
         var err = JSON.parse(err.responseText);
-        alert(err.error)
+        console.log(err);
+        // alert(err.error)
       } catch (e) {
-        alert('Có lỗi xảy ra.')
+        // alert('Có lỗi xảy ra.')
         console.log(e);
       }
     }
@@ -141,7 +142,7 @@ function connect(c) {
     },
     error: function (err) {
       console.log(err);
-      alert('error')
+      // alert('error')
     }
   })
 }

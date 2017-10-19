@@ -67,6 +67,7 @@
                     <label for="cid">cid:</label>
                     <div class="input-group">
                       <input type="cid" class="form-control" id="cid" name="cid" readonly="readonly">
+                      <input type="hidden" class="form-control" id="token-upload" readonly="readonly">
                       <div class="input-group-btn">
                         <button class="btn btn-default" onclick="refreshHandler()">
                           <i class="glyphicon glyphicon-refresh"></i>
@@ -119,7 +120,14 @@
               <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
                 <div class="form-group">
                     <label for="c">ConnectId:</label>
-                    <input type="c" class="form-control" id="c" onchange="connectHandler(this)" placeholder="Enter c" name="c">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="c" placeholder="Enter c" name="c">
+                      <div class="input-group-btn">
+                        <button class="btn btn-default" onclick="connectHandler(document.getElementById('c'))">
+                          <i class="glyphicon glyphicon-ok"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 <div class="form-group" style="display: none">
                   <label for="id">id:</label>
