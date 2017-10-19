@@ -70,7 +70,7 @@ function download(a) {
       gradient: ["green"]
     },
     animation: false
-  });
+  })
   $('#circle-progress-download').fadeIn(10);
   var xhr = new XMLHttpRequest();
   // var xhr = $.ajaxSettings.xhr();

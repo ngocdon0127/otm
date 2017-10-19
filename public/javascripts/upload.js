@@ -12,21 +12,22 @@ function loadCid() {
     var cookie = getCookie('tesa');
     cookie = JSON.parse(cookie);
     console.log(cookie);
-    if (cookie.cid) {
+    if (cookie.cid && cookie.token) {
       $('#cid').val(cookie.cid)
       $('#token-upload').val(cookie.token)
-    } else {
-      refreshCid();
+      return true;
     }
+    return false;
   } catch (e) {
     // console.log(e);
-    refreshCid();
+    // refreshCid();
+    return false;
   }
   
 }
 
-function refreshHandler(evt) {
-  refreshCid();
+function refreshCidHandler(evt) {
+  refreshCid()
 }
 
 function refreshCid() {
@@ -111,7 +112,7 @@ function submitForm() {
       gradient: ["green"]
     },
     animation: false
-  });
+  })
   $('#circle-progress-upload').fadeIn(10);
   // $.ajax({
   //   // url: '/upload',
