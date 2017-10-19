@@ -113,14 +113,14 @@ function submitForm() {
       try {
         fd.delete('file')
       } catch (e) {
-        console.error(err);
+        console.error(e);
       }
       break;
     case 'file':
       try {
         fd.delete('text')
       } catch (e) {
-        console.error(err);
+        console.error(e);
       }
       break;
     default:
