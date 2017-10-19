@@ -5,6 +5,14 @@ console.log = function (obj) {
   t += '\n=====\n' + JSON.stringify(obj);
   $('#debug').text(t)
 }
+
+let originalCE = console.error;
+console.error = function (obj) {
+  originalCE(obj)
+  let t = $('#debug').text();
+  t += '\n== error ===\n' + JSON.stringify(obj);
+  $('#debug').text(t)
+}
 var HOST = 'http://139.59.109.25:8181'
 var u = Math.floor(Math.random() * 1000000);
 console.log(u);
@@ -98,13 +106,22 @@ function selectType(radio) {
 }
 
 function submitForm() {
+  console.log('btn clicked');
   var fd = new FormData(document.getElementById('form-upload'));
   switch (type) {
     case 'text':
-      fd.delete('file')
+      try {
+        fd.delete('file')
+      } catch (e) {
+        console.error(err);
+      }
       break;
     case 'file':
-      fd.delete('text');
+      try {
+        fd.delete('text')
+      } catch (e) {
+        console.error(err);
+      }
       break;
     default:
       alert('cc');
