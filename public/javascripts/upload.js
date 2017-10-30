@@ -45,6 +45,17 @@ function refreshCidHandler(evt) {
   refreshCid()
 }
 
+var countDownData = {
+  upload: {
+    remainingSecs: 0,
+    interval: null
+  },
+  download: {
+    remainingSecs: 0,
+    interval: null
+  }
+};
+
 function refreshCid() {
   $.ajax({
     // url: '/id',
@@ -62,7 +73,20 @@ function refreshCid() {
         console.log(res);
         $('#cid').val(res.code);
         $('#token-upload').val(res.token);
-        setCookie('tesa', JSON.stringify({cid: res.code, token: res.token}), 0.25 / 24)
+        getRemainingSecs(res.token, function (secs) {
+          secs = parseInt(secs);
+          if (!Number.isInteger(secs) || (secs < 0)) {
+            return;
+          }
+          countDownData.upload.remainingSecs = secs;
+          if (countDownData.upload.interval) {
+            clearInterval(countDownData.upload.interval)
+          }
+          countDownData.upload.interval = null;
+          countDownUpload();
+          countDownData.upload.interval = setInterval(countDownUpload, 1000);
+          setCookie('tesa', JSON.stringify({cid: res.code, token: res.token}), (secs + 30) / 86400)
+        })
       } catch (e) {
         console.log(e);
         alert('Có lỗi xảy ra')
@@ -79,6 +103,43 @@ function refreshCid() {
       }
     }
   })
+}
+
+function getRemainingSecs(token, cb) {
+  $.ajax({
+    url: `${HOST}/check?u=1&o=${token}`,
+    type: 'GET',
+    success: function (secs) {
+      console.log(secs);
+      secs = parseInt(secs);
+      if (Number.isInteger(secs) && (secs > 0)) {
+        cb(secs)
+      }
+    },
+    error: function (err) {
+      console.log(err);
+    }
+  })
+}
+
+function countDownUpload() {
+  countDown('upload');
+}
+
+function countDown(action) {
+  if (['upload', 'download'].indexOf(action) < 0) {
+    return console.log('invalid action', action);
+  }
+  var secs = countDownData[action].remainingSecs;
+  if (Number.isInteger(secs) && (secs > 0)) {
+    $(`#remaining-time-${action}`).fadeIn(0);
+    $(`#remaining-time-${action}`).text(secs);
+    countDownData[action].remainingSecs--;
+  } else {
+    countDownData[action].remainingSecs = 0;
+    $(`#remaining-time-${action}`).fadeOut(0);
+    $(`#remaining-time-${action}`).text(0);
+  }
 }
 
 var type = 'text';

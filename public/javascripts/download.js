@@ -153,6 +153,26 @@ function connect(c) {
         // console.log(`loading ${res}`);
         load(res)
       }, 2000)
+      try {
+        var cookie = getCookie('tesa');
+        // console.log(cookie);
+        cookie = JSON.parse(cookie);
+        if (!cookie.token) {
+          return;
+        }
+        // console.log(cookie.token, 'now countDown');
+        getRemainingSecs(cookie.token, function (secs) {
+          countDownData.download.remainingSecs = secs;
+          if (countDownData.download.interval) {
+            clearInterval(countDownData.download.interval)
+          }
+          countDownData.download.interval = null;
+          countDownDownload();
+          countDownData.download.interval = setInterval(countDownDownload, 1000);
+        })
+      } catch (e) {
+        console.log(e);
+      }
     },
     error: function (err) {
       // $('#glyphicon-ok').removeClass('text-success')
@@ -172,6 +192,10 @@ function connect(c) {
       // alert('error')
     }
   })
+}
+
+function countDownDownload() {
+  countDown('download');
 }
 
 // $('#circle-progress-download').circleProgress({
