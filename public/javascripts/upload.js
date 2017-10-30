@@ -192,6 +192,9 @@ function selectType(radio) {
 }
 
 function submitForm() {
+  if (!$('#token-upload').val()) {
+    return alert('Invalid code')
+  }
   console.log('btn clicked');
   var fd = new FormData(document.getElementById('form-upload'));
   switch (type) {
