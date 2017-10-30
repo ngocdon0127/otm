@@ -64,13 +64,14 @@
               <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" >
                 <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="return false" id="form-upload">
                   <div class="form-group">
-                    <label for="cid">cid:</label>
+                    <label for="cid">Connection code:</label>
                     <div class="input-group">
                       <input type="cid" class="form-control" id="cid" name="cid" readonly="readonly">
                       <input type="hidden" class="form-control" id="token-upload" readonly="readonly">
                       <div class="input-group-btn">
                         <button class="btn btn-default" onclick="refreshCidHandler()">
-                          <i class="glyphicon glyphicon-refresh"></i>
+                          <!-- <i class="glyphicon glyphicon-refresh"></i> -->
+                          <span>Create new code</span>
                         </button>
                       </div>
                     </div>
@@ -122,15 +123,17 @@
             <div class="row">
               <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
                 <div class="form-group">
-                    <label for="c">ConnectId:</label>
+                    <label for="c">Connection code:</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="c" placeholder="Enter c" name="c">
+                      <input type="text" class="form-control" id="c" placeholder="Enter Connection code and press Connect" name="c">
                       <div class="input-group-btn">
                         <button class="btn btn-default" id="btn-connect" onclick="connectHandler(document.getElementById('c'))">
-                          <i class="glyphicon glyphicon-ok" id="glyphicon-ok"></i>
+                          <!-- <i class="glyphicon glyphicon-ok" id="glyphicon-ok"></i> -->
+                          <span>Connect</span>
                         </button>
                       </div>
                     </div>
+                    <span id="err-msg" style="display: hidden" class="text-danger"></span>
                   </div>
                 <div class="form-group" style="display: none">
                   <label for="id">id:</label>

@@ -62,7 +62,7 @@ function refreshCid() {
         console.log(res);
         $('#cid').val(res.code);
         $('#token-upload').val(res.token);
-        setCookie('tesa', JSON.stringify({cid: res.code, token: res.token}), 7)
+        setCookie('tesa', JSON.stringify({cid: res.code, token: res.token}), 0.25 / 24)
       } catch (e) {
         console.log(e);
         alert('Có lỗi xảy ra')

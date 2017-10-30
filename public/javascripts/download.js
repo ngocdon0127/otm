@@ -3,6 +3,8 @@
 //   console.log(1)
 // }
 
+var loadInterval = null;
+
 function loadHandler(input) {
   load(input.value);
 }
@@ -135,11 +137,19 @@ function connect(c) {
       // console.log(res);
       // $('#glyphicon-ok').removeClass('text-danger')
       $('#btn-connect').removeClass('btn-danger')
+      $('#btn-connect').html('<span>Connected</span>')
+      $('#c').css('border', '');
+      $('#err-msg').fadeOut(0)
         // $('#glyphicon-ok').addClass('text-success')
       $('#btn-connect').addClass('btn-success')
       $('#id').val(res);
       load(res)
-      setInterval(function () {
+      try {
+        clearInterval(loadInterval);
+      } catch (e) {
+        console.log(e);
+      }
+      loadInterval = setInterval(function () {
         // console.log(`loading ${res}`);
         load(res)
       }, 2000)
@@ -147,9 +157,18 @@ function connect(c) {
     error: function (err) {
       // $('#glyphicon-ok').removeClass('text-success')
       $('#btn-connect').removeClass('btn-success')
+      $('#btn-connect').html('<span>Connect</span>')
+      $('#err-msg').fadeIn(0)
+      $('#err-msg').text(err.responseText);
+      $('#c').css('border', '1px solid #a94442');
       // $('#glyphicon-ok').addClass('text-danger')
       $('#btn-connect').addClass('btn-danger')
       console.log(err);
+      try {
+        clearInterval(loadInterval);
+      } catch (e) {
+        console.log(e);
+      }
       // alert('error')
     }
   })
