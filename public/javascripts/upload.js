@@ -30,6 +30,14 @@ function loadCid() {
     if (cookie.cid && cookie.token) {
       $('#cid').val(cookie.cid)
       $('#token-upload').val(cookie.token)
+      refreshCountDown(cookie.cid, cookie.token, 'upload');
+      if (countDownData.upload.refreshInterval) {
+          clearInterval(countDownData.upload.refreshInterval)
+        }
+        countDownData.upload.refreshInterval = setInterval(function () {
+          console.log('refreshCountDown upload');
+          refreshCountDown(cookie.cid, cookie.token, 'upload');
+        }, 5000)
       return true;
     }
     return false;
@@ -48,11 +56,13 @@ function refreshCidHandler(evt) {
 var countDownData = {
   upload: {
     remainingSecs: 0,
-    interval: null
+    interval: null,
+    refreshInterval: null
   },
   download: {
     remainingSecs: 0,
-    interval: null
+    interval: null,
+    refreshInterval: null
   }
 };
 
@@ -73,20 +83,14 @@ function refreshCid() {
         console.log(res);
         $('#cid').val(res.code);
         $('#token-upload').val(res.token);
-        getRemainingSecs(res.token, function (secs) {
-          secs = parseInt(secs);
-          if (!Number.isInteger(secs) || (secs < 0)) {
-            return;
-          }
-          countDownData.upload.remainingSecs = secs;
-          if (countDownData.upload.interval) {
-            clearInterval(countDownData.upload.interval)
-          }
-          countDownData.upload.interval = null;
-          countDownUpload();
-          countDownData.upload.interval = setInterval(countDownUpload, 1000);
-          setCookie('tesa', JSON.stringify({cid: res.code, token: res.token}), (secs + 30) / 86400)
-        })
+        refreshCountDown(res.code, res.token, 'upload');
+        if (countDownData.upload.refreshInterval) {
+          clearInterval(countDownData.upload.refreshInterval)
+        }
+        countDownData.upload.refreshInterval = setInterval(function () {
+          console.log('refreshCountDown upload');
+          refreshCountDown(res.code, res.token, 'upload');
+        }, 5000)
       } catch (e) {
         console.log(e);
         alert('Có lỗi xảy ra')
@@ -101,6 +105,28 @@ function refreshCid() {
         alert('Có lỗi xảy ra.')
         console.log(e);
       }
+    }
+  })
+}
+
+function refreshCountDown(code, token, action) {
+  if (['upload', 'download'].indexOf(action) < 0) {
+    return console.log('invalid action', action);
+  }
+  getRemainingSecs(token, function (secs) {
+    secs = parseInt(secs);
+    if (!Number.isInteger(secs) || (secs < 0)) {
+      return;
+    }
+    countDownData[action].remainingSecs = secs;
+    if (countDownData[action].interval) {
+      clearInterval(countDownData[action].interval)
+    }
+    countDownData[action].interval = null;
+    countDownUpload();
+    countDownData[action].interval = setInterval(countDownUpload, 1000);
+    if (action == 'upload') {
+      setCookie('tesa', JSON.stringify({cid: code, token: token}), (secs + 30) / 86400)
     }
   })
 }

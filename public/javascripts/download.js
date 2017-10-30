@@ -161,15 +161,23 @@ function connect(c) {
           return;
         }
         // console.log(cookie.token, 'now countDown');
-        getRemainingSecs(cookie.token, function (secs) {
-          countDownData.download.remainingSecs = secs;
-          if (countDownData.download.interval) {
-            clearInterval(countDownData.download.interval)
-          }
-          countDownData.download.interval = null;
-          countDownDownload();
-          countDownData.download.interval = setInterval(countDownDownload, 1000);
-        })
+        // getRemainingSecs(cookie.token, function (secs) {
+        //   countDownData.download.remainingSecs = secs;
+        //   if (countDownData.download.interval) {
+        //     clearInterval(countDownData.download.interval)
+        //   }
+        //   countDownData.download.interval = null;
+        //   countDownDownload();
+        //   countDownData.download.interval = setInterval(countDownDownload, 1000);
+        // })
+        refreshCountDown(res.code, res.token, 'download');
+        if (countDownData.download.refreshInterval) {
+          clearInterval(countDownData.download.refreshInterval)
+        }
+        countDownData.download.refreshInterval = setInterval(function () {
+          console.log('refreshCountDown download');
+          refreshCountDown(res.code, res.token, 'download');
+        }, 5000)
       } catch (e) {
         console.log(e);
       }
