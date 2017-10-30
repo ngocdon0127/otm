@@ -38,7 +38,12 @@
   <body style="padding-top: 100px; padding-left: 5px; padding-right: 5px">
     <div class="container">
       <div class="row">
-        <ul style="text-align: center;" class="nav nav-tabs tabs col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center; margin-bottom: 20px">
+          <img src="/tesa.png" class="img img-responsive" style="margin: auto auto">
+        </div>
+      </div>
+      <div class="row">
+        <ul style="text-align: center;" class="nav nav-tabs tabs col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
           <li class="active"><a data-toggle="tab" href="#sender">Sender</a></li>
           <!-- <li><a data-toggle="tab" class="btn btn-primary" href="#menu1">Sender</a></li> -->
           <li><a data-toggle="tab" href="#receiver">Receiver</a></li>
@@ -50,18 +55,18 @@
         <div class="tab-content">
           <div id="sender" class="tab-pane fade in active ">
             <div class="row">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center">
                 <h3>Sender</h3>
               </div>
             </div>
             <!-- <div class="row">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1" style="text-align: center">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-1" style="text-align: center">
                 <a href="/upload" class="btn btn-primary">Sender</a>
                 <a href="/download" class="btn btn-default">Receiver</a>
               </div>
             </div> -->
             <div class="row">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" >
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" >
                 <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="return false" id="form-upload">
                   <div class="form-group">
                     <label for="cid">Connection code:</label>
@@ -95,33 +100,33 @@
                   </div>
                 </form>
               </div>
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="display: none">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="display: none">
                 <textarea name="" id="debug" style="width: 100%" rows="10"></textarea>
               </div>
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
                 <button class="btn btn-success" onclick="submitForm()">Submit</button>
               </div>
             </div>
             <div class="row" style="margin-top: 20px">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center;">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center;">
                 <div id="circle-progress-upload" style="display: "></div>
               </div>
             </div>
           </div>
           <div id="receiver" class="tab-pane fade">
             <div class="row">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center">
                 <h3>Receiver</h3>
               </div>
             </div>
             <!-- <div class="row">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-1" style="text-align: center">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-1" style="text-align: center">
                 <a href="/upload" class="btn btn-default">Sender</a>
                 <button class="btn btn-primary" onclick="connectHandler(this)">Receiver</button>
               </div>
             </div> -->
             <div class="row">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
                 <div class="form-group">
                     <label for="c">Connection code:</label>
                     <div class="input-group">
@@ -153,7 +158,7 @@
               </div>
             </div>
             <div class="row" style="margin-top: 20px">
-              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center;">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10 col-xs-offset-1 col-lg-offset-3 col-md-offset-2 col-sm-offset-1" style="text-align: center;">
                 <div id="circle-progress-download" style="display: "></div>
 
               </div>
