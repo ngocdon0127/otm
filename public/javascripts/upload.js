@@ -123,8 +123,8 @@ function refreshCountDown(code, token, action) {
       clearInterval(countDownData[action].interval)
     }
     countDownData[action].interval = null;
-    countDownUpload();
-    countDownData[action].interval = setInterval(countDownUpload, 1000);
+    (action == 'upload') ? countDownUpload() : countDownDownload();
+    countDownData[action].interval = setInterval((action == 'upload') ? countDownUpload : countDownDownload, 1000);
     if (action == 'upload') {
       setCookie('tesa', JSON.stringify({cid: code, token: token}), (secs + 30) / 86400)
     }

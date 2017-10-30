@@ -170,13 +170,13 @@ function connect(c) {
         //   countDownDownload();
         //   countDownData.download.interval = setInterval(countDownDownload, 1000);
         // })
-        refreshCountDown(res.code, res.token, 'download');
+        refreshCountDown(cookie.cid, cookie.token, 'download');
         if (countDownData.download.refreshInterval) {
           clearInterval(countDownData.download.refreshInterval)
         }
         countDownData.download.refreshInterval = setInterval(function () {
           console.log('refreshCountDown download');
-          refreshCountDown(res.code, res.token, 'download');
+          refreshCountDown(cookie.cid, cookie.token, 'download');
         }, 5000)
       } catch (e) {
         console.log(e);
