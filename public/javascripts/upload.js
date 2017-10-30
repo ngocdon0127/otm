@@ -35,7 +35,7 @@ function loadCid() {
           clearInterval(countDownData.upload.refreshInterval)
         }
         countDownData.upload.refreshInterval = setInterval(function () {
-          console.log('refreshCountDown upload');
+          // console.log('refreshCountDown upload');
           refreshCountDown(cookie.cid, cookie.token, 'upload');
         }, 5000)
       return true;
@@ -88,7 +88,7 @@ function refreshCid() {
           clearInterval(countDownData.upload.refreshInterval)
         }
         countDownData.upload.refreshInterval = setInterval(function () {
-          console.log('refreshCountDown upload');
+          // console.log('refreshCountDown upload');
           refreshCountDown(res.code, res.token, 'upload');
         }, 5000)
       } catch (e) {
@@ -266,6 +266,26 @@ function submitForm() {
       setTimeout(function () {
         $('#circle-progress-upload').fadeOut(500);
       }, 500)
+      try {
+        var cookie = getCookie('tesa');
+        cookie = JSON.parse(cookie);
+        console.log(cookie);
+        if (cookie.cid && cookie.token) {
+          $('#cid').val(cookie.cid)
+          $('#token-upload').val(cookie.token)
+          refreshCountDown(cookie.cid, cookie.token, 'upload');
+          if (countDownData.upload.refreshInterval) {
+              clearInterval(countDownData.upload.refreshInterval)
+            }
+            countDownData.upload.refreshInterval = setInterval(function () {
+              // console.log('refreshCountDown upload');
+              refreshCountDown(cookie.cid, cookie.token, 'upload');
+            }, 5000)
+          return true;
+        }
+      } catch (e) {
+        console.log(e);
+      }
     } else if (xhr.readyState == 4) {
       console.log(xhr.status);
     }

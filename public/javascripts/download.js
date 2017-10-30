@@ -175,7 +175,7 @@ function connect(c) {
           clearInterval(countDownData.download.refreshInterval)
         }
         countDownData.download.refreshInterval = setInterval(function () {
-          console.log('refreshCountDown download');
+          // console.log('refreshCountDown download');
           refreshCountDown(cookie.cid, cookie.token, 'download');
         }, 5000)
       } catch (e) {
