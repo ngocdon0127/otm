@@ -8,8 +8,47 @@ var loadInterval = null;
 function loadHandler(input) {
   load(input.value);
 }
+
+function loadFromCookie() {
+  try {
+    var cookie = getCookie('tesa');
+    cookie = JSON.parse(cookie);
+    console.log(cookie);
+    if (cookie.cid && cookie.token) {
+      load(cookie.token);
+      try {
+        clearInterval(loadInterval);
+      } catch (e) {
+        console.log(e);
+      }
+      loadInterval = setInterval(function () {
+        // console.log(`loading ${res}`);
+        load(cookie.token)
+      }, 2000)
+      $('#c').val(cookie.cid)
+      // $('#token-upload').val(cookie.token)
+      refreshCountDown(cookie.cid, cookie.token, 'download');
+      if (countDownData.download.refreshInterval) {
+          clearInterval(countDownData.download.refreshInterval)
+        }
+        countDownData.download.refreshInterval = setInterval(function () {
+          // console.log('refreshCountDown download');
+          refreshCountDown(cookie.cid, cookie.token, 'download');
+        }, 5000)
+      return true;
+    }
+    return false;
+  } catch (e) {
+    // console.log(e);
+    // refreshCid();
+    return false;
+  }
+}
+
+loadFromCookie();
+
 function load(id) {
-  // console.log(id);
+  // console.log('load ' + id);
   // console.log(`http://192.168.29.121:8181/data?u=1&o=${id}`);
   $.ajax({
     // url: `/record/${id}`,

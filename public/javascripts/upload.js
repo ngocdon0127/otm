@@ -46,7 +46,6 @@ function loadCid() {
     // refreshCid();
     return false;
   }
-  
 }
 
 function refreshCidHandler(evt) {
@@ -136,7 +135,7 @@ function getRemainingSecs(token, cb) {
     url: `${HOST}/check?u=1&o=${token}`,
     type: 'GET',
     success: function (secs) {
-      console.log(secs);
+      // console.log(secs);
       secs = parseInt(secs);
       if (Number.isInteger(secs) && (secs > 0)) {
         cb(secs)
