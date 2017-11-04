@@ -217,6 +217,7 @@ function submitForm() {
       return;
   }
   var urlUpload = `${HOST}/data?u=${u}&o=${$('#token-upload').val()}&t=${type == 'text' ? 0 : 1}`;
+  // var urlUpload = '/debug';
   console.log(urlUpload);
   $('#circle-progress-upload').circleProgress({
     value: 0,
@@ -294,7 +295,16 @@ function submitForm() {
   }
 
   xhr.open('POST', urlUpload, true);
+  if (type == 'text') {
+    // console.log('set text');
+    // xhr.setRequestHeader('Content-Type', 'application/www-x-form-urlencoded')
+    xhr.setRequestHeader('Content-Type', 'text/plain')
+    // console.log(xhr);
+    xhr.send(fd.get('text'));
+  } else {
+    xhr.send(fd);
+  }
   // xhr.open('POST', `/upload`, true);
   // xhr.responseType = 'arraybuffer';
-  xhr.send(fd);
+  
 }

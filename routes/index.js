@@ -14,6 +14,20 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express', records: data });
 });
 
+router.get('/hehe', (req, res) => {
+  // res.download('public/tesa.png');
+  // res.attachment('');
+  // res.attachment('public/tesa.png');
+  res.sendFile(path.join(__dirname, '../public/tesa.png'))
+  // res.end();
+})
+
+router.post('/debug', (req, res) => {
+  console.log(req.body);
+  console.log(req.headers);
+  return res.end('ok')
+})
+
 router.get('/upload', (req, res) => {
   return res.render('upload')
 })
