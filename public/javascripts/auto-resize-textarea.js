@@ -1,4 +1,6 @@
 var observe;
+var utextResizeHandler = null;
+var dtextResizeHandler = null;
 if (window.attachEvent) {
     observe = function (element, event, handler) {
         element.attachEvent('on' + event, handler);
@@ -10,26 +12,46 @@ else {
     };
 }
 function init () {
-    var text = document.getElementById('upload-text');
-    function resize () {
-        console.log(text.scrollHeight);
-        if (text.scrollHeight >= 120) {
-            return
+    var utext = document.getElementById('upload-text');
+    var dtext = document.getElementById('download-text');
+    function createResizeHandler(element) {
+        return function resize () {
+            // console.log(element.id);
+            // console.log(element.scrollHeight);
+            if (element.scrollHeight >= 120) {
+                element.style.height = 'auto';
+                element.style.height = '120px';
+                return
+            }
+            element.style.height = 'auto';
+            element.style.height = element.scrollHeight + 'px';
         }
-        text.style.height = 'auto';
-        text.style.height = text.scrollHeight + 'px';
     }
     /* 0-timeout to get the already changed text */
-    function delayedResize () {
-        window.setTimeout(resize, 0);
+    utextResizeHandler = createResizeHandler(utext)
+    dtextResizeHandler = createResizeHandler(dtext)
+    // console.log('handlers created');
+    function udelayedResize () {
+        window.setTimeout(utextResizeHandler, 0);
     }
-    observe(text, 'change',  resize);
-    observe(text, 'cut',     delayedResize);
-    observe(text, 'paste',   delayedResize);
-    observe(text, 'drop',    delayedResize);
-    observe(text, 'keydown', delayedResize);
+    function ddelayedResize () {
+        window.setTimeout(dtextResizeHandler, 0);
+    }
+    observe(utext, 'change',  utextResizeHandler);
+    observe(utext, 'cut',     udelayedResize);
+    observe(utext, 'paste',   udelayedResize);
+    observe(utext, 'drop',    udelayedResize);
+    observe(utext, 'keydown', udelayedResize);
 
-    text.focus();
-    text.select();
-    resize();
+    observe(dtext, 'change',  dtextResizeHandler);
+    observe(dtext, 'cut',     ddelayedResize);
+    observe(dtext, 'paste',   ddelayedResize);
+    observe(dtext, 'drop',    ddelayedResize);
+    observe(dtext, 'keydown', ddelayedResize);
+
+    utext.focus();
+    utext.select();
+    utextResizeHandler();
+
+    // ddelayedResize();
 }

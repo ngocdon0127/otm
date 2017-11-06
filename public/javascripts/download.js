@@ -58,6 +58,10 @@ function load(id) {
       // console.log(res)
       res = JSON.parse(res);
       $('#download-text').val(res.text)
+      $('#download-text').text(res.text)
+      if (dtextResizeHandler) {
+        dtextResizeHandler();
+      }
       document.getElementById('list-attachments').innerHTML = ''
       // if (res.attachments instanceof Array) {
       //   for(var i = 0; i < res.attachments.length; i++) {
