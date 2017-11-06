@@ -105,6 +105,7 @@ function load(id) {
 function downloadHandler(evt) {
   console.log(evt.target);
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  return window.open(evt.target.getAttribute('data-static-url')) // waiting for Spark to allow Content-Length in reponse static files
   if (iOS) {
     return window.open(evt.target.getAttribute('data-static-url'))
   }
