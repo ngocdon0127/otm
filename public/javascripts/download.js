@@ -134,11 +134,11 @@ function download(a) {
 
   xhr.onreadystatechange = function () {
     if ((xhr.readyState == 4) && (xhr.status == 200)){
-      var disposition = xhr.getResponseHeader('Content-Disposition');
-      disposition = decodeURIComponent(disposition);
-      var fields = disposition.split([';']);
-      console.log(disposition);
-      console.log(fields);
+      // var disposition = xhr.getResponseHeader('Content-Disposition');
+      // disposition = decodeURIComponent(disposition);
+      // var fields = disposition.split([';']);
+      // console.log(disposition);
+      // console.log(fields);
       var fileName = a.getAttribute('data-original-name');
       fileName = fileName.replace(/[^a-zA-Z]+$/g, '');
       var type = xhr.getResponseHeader('Content-Type');
@@ -163,7 +163,7 @@ function download(a) {
     }
   }
 
-  xhr.open('GET', a.getAttribute('data-download-url'), true);
+  xhr.open('GET', a.getAttribute('data-static-url'), true);
   xhr.responseType = 'arraybuffer';
   xhr.send();
 }
