@@ -11,7 +11,7 @@ function loadHandler(input) {
 
 function loadFromCookie() {
   try {
-    var cookie = getCookie('tesa');
+    var cookie = getCookie('tesadownload');
     cookie = JSON.parse(cookie);
     console.log(cookie);
     if (cookie.cid && cookie.token) {
@@ -179,6 +179,7 @@ function connect(c) {
     type: 'GET',
     success: function (res) {
       // console.log(res);
+      refreshCountDown(c, res, 'download');
       // $('#glyphicon-ok').removeClass('text-danger')
       $('#btn-connect').removeClass('btn-danger')
       $('#btn-connect').html('<span>Connected</span>')
@@ -198,7 +199,7 @@ function connect(c) {
         load(res)
       }, 2000)
       try {
-        var cookie = getCookie('tesa');
+        var cookie = getCookie('tesadownload');
         // console.log(cookie);
         cookie = JSON.parse(cookie);
         if (!cookie.token) {

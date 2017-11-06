@@ -24,9 +24,14 @@ $(document).ready(function(){
 
 function loadCid() {
   try {
-    var cookie = getCookie('tesa');
+    var cookie = getCookie('tesaupload');
     cookie = JSON.parse(cookie);
     console.log(cookie);
+    // if (cookie.upload) {
+    //   cookie = cookie.upload;
+    // } else {
+    //   return false;
+    // }
     if (cookie.cid && cookie.token) {
       $('#cid').val(cookie.cid)
       $('#token-upload').val(cookie.token)
@@ -112,6 +117,7 @@ function refreshCountDown(code, token, action) {
   if (['upload', 'download'].indexOf(action) < 0) {
     return console.log('invalid action', action);
   }
+  // console.log('refreshCountDown ' + action);
   getRemainingSecs(token, function (secs) {
     secs = parseInt(secs);
     if (!Number.isInteger(secs) || (secs < 0)) {
@@ -125,7 +131,11 @@ function refreshCountDown(code, token, action) {
     (action == 'upload') ? countDownUpload() : countDownDownload();
     countDownData[action].interval = setInterval((action == 'upload') ? countDownUpload : countDownDownload, 1000);
     if (action == 'upload') {
-      setCookie('tesa', JSON.stringify({cid: code, token: token}), (secs + 30) / 86400)
+      // console.log('now set tesaupload');
+      setCookie('tesaupload', JSON.stringify({cid: code, token: token}), (secs + 30) / 86400)
+    } else {
+      // console.log('now set tesadownload');
+      setCookie('tesadownload', JSON.stringify({cid: code, token: token}), (secs + 30) / 86400)
     }
   })
 }
@@ -270,9 +280,14 @@ function submitForm() {
         $('#circle-progress-upload').fadeOut(500);
       }, 500)
       try {
-        var cookie = getCookie('tesa');
+        var cookie = getCookie('tesaupload');
         cookie = JSON.parse(cookie);
         console.log(cookie);
+        // if (cookie.upload) {
+        //   cookie = cookie.upload;
+        // } else {
+        //   return false;
+        // }
         if (cookie.cid && cookie.token) {
           $('#cid').val(cookie.cid)
           $('#token-upload').val(cookie.token)
