@@ -13,7 +13,7 @@ console.error = function (obj) {
   t += '\n== error ===\n' + JSON.stringify(obj);
   $('#debug').text(t)
 }
-var HOST = 'http://139.59.109.25:8181'
+var HOST = 'http://tesa.me:8181'
 var u = Math.floor(Math.random() * 1000000);
 console.log(u);
 $(document).ready(function(){
