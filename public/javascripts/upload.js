@@ -141,6 +141,7 @@ function refreshCountDown(code, token, action) {
 }
 
 function getRemainingSecs(token, cb) {
+  // console.log('get secs ' + token);
   $.ajax({
     url: `${HOST}/check?u=1&o=${token}`,
     type: 'GET',

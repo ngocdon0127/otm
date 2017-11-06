@@ -179,7 +179,8 @@ function connect(c) {
     type: 'GET',
     success: function (res) {
       // console.log(res);
-      refreshCountDown(c, res, 'download');
+      setCookie('tesadownload', JSON.stringify({cid: c, token: res}), 1)
+      // refreshCountDown(c, res, 'download');
       // $('#glyphicon-ok').removeClass('text-danger')
       $('#btn-connect').removeClass('btn-danger')
       $('#btn-connect').html('<span>Connected</span>')
@@ -219,6 +220,7 @@ function connect(c) {
         if (countDownData.download.refreshInterval) {
           clearInterval(countDownData.download.refreshInterval)
         }
+        // console.log('set interval download');
         countDownData.download.refreshInterval = setInterval(function () {
           // console.log('refreshCountDown download');
           refreshCountDown(cookie.cid, cookie.token, 'download');
