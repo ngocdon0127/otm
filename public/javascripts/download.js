@@ -76,6 +76,7 @@ function load(id) {
         a.href = '#';
         a.setAttribute('class', 'list-group-item');
         a.setAttribute('data-download-url', `${HOST}/static?u=1&o=${id}&f=${res.fileName}`);
+        a.setAttribute('data-static-url', `${HOST}/${id}/${res.fileName}`);
         a.setAttribute('data-original-name', res.fileName);
         a.addEventListener('click', downloadHandler);
         a.innerHTML = (res.fileName.length < 50) ? res.fileName : (res.fileName.substring(0, 50) + '... ' + res.fileName.substring(res.fileName.lastIndexOf('.')));
@@ -99,6 +100,10 @@ function load(id) {
 
 function downloadHandler(evt) {
   console.log(evt.target);
+  var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (iOS) {
+    return window.open(evt.target.getAttribute('data-static-url'))
+  }
   download(evt.target)
 
 }
