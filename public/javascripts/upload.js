@@ -324,7 +324,13 @@ function submitForm() {
     }
     console.log('set header ok');
     // console.log(xhr);
-    console.log('fd ' + fd.get('text'));
+    var t = 't';
+    try {
+      t = fd.get('text')
+    catch (e_) {
+      console.log(e_);
+    }
+    console.log('fd ' + t);
     console.log('textarea value ' + document.getElementById('upload-text').value);
     console.log('textarea HTML ' + document.getElementById('upload-text').innerHTML);
     xhr.send(fd.get('text'));
