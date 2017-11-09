@@ -307,17 +307,23 @@ function submitForm() {
       }
     } else if (xhr.readyState == 4) {
       console.log(xhr.status);
+    } else {
+      console.log(xhr.readyState);
+      console.log(xhr.status);
     }
   }
 
   xhr.open('POST', urlUpload, true);
+  console.log('POST opened');
   if (type == 'text') {
-    // console.log('set text');
+    console.log('set text');
     // xhr.setRequestHeader('Content-Type', 'application/www-x-form-urlencoded')
     xhr.setRequestHeader('Content-Type', 'text/plain')
     // console.log(xhr);
+    console.log(fd.get('text'));
     xhr.send(fd.get('text'));
   } else {
+    console.log('set file');
     xhr.send(fd);
   }
   // xhr.open('POST', `/upload`, true);
