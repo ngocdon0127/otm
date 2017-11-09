@@ -319,7 +319,9 @@ function submitForm() {
     // xhr.setRequestHeader('Content-Type', 'application/www-x-form-urlencoded')
     xhr.setRequestHeader('Content-Type', 'text/plain')
     // console.log(xhr);
-    console.log(fd.get('text'));
+    console.log('fd ' + fd.get('text'));
+    console.log('textarea value ' + document.getElementById('upload-text').value);
+    console.log('textarea HTML ' + document.getElementById('upload-text').innerHTML);
     xhr.send(fd.get('text'));
   } else {
     console.log('set file');
