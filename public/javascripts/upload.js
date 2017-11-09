@@ -273,6 +273,8 @@ function submitForm() {
   };
 
   xhr.onreadystatechange = function () {
+    console.log('readyState ' + xhr.readyState);
+    console.log('status ' + xhr.status);
     if ((xhr.readyState == 4) && (xhr.status == 200)){
       // var disposition = xhr.getResponseHeader('Content-Disposition');
       // disposition = decodeURIComponent(disposition);
@@ -306,9 +308,6 @@ function submitForm() {
         console.log(e);
       }
     } else if (xhr.readyState == 4) {
-      console.log(xhr.status);
-    } else {
-      console.log(xhr.readyState);
       console.log(xhr.status);
     }
   }
