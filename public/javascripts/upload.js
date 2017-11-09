@@ -327,7 +327,7 @@ function submitForm() {
     var t = 't';
     try {
       t = fd.get('text')
-    catch (e_) {
+    } catch (e_) {
       console.log(e_);
     }
     console.log('fd ' + t);
