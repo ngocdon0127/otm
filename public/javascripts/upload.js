@@ -13,6 +13,11 @@ console.error = function (obj) {
   t += '\n== error ===\n' + JSON.stringify(obj);
   $('#debug').text(t)
 }
+
+function ob(x) {
+  return document.getElementById(x);
+}
+
 var HOST = 'http://tesa.me:8181'
 var u = Math.floor(Math.random() * 1000000);
 console.log(u);
@@ -328,12 +333,13 @@ function submitForm() {
     try {
       t = fd.get('text')
     } catch (e_) {
+      t = ob('upload-text').value
       console.log(e_);
     }
     console.log('fd ' + t);
-    console.log('textarea value ' + document.getElementById('upload-text').value);
-    console.log('textarea HTML ' + document.getElementById('upload-text').innerHTML);
-    xhr.send(fd.get('text'));
+    console.log('textarea value ' + ob('upload-text').value);
+    console.log('textarea HTML ' + ob.innerHTML);
+    xhr.send(t);
   } else {
     console.log('set file');
     xhr.send(fd);
