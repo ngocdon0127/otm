@@ -317,7 +317,12 @@ function submitForm() {
   if (type == 'text') {
     console.log('set text');
     // xhr.setRequestHeader('Content-Type', 'application/www-x-form-urlencoded')
-    xhr.setRequestHeader('Content-Type', 'text/plain')
+    try {
+      xhr.setRequestHeader('Content-Type', 'text/plain')
+    } catch (e_) {
+      console.error(e_);
+    }
+    console.log('set header ok');
     // console.log(xhr);
     console.log('fd ' + fd.get('text'));
     console.log('textarea value ' + document.getElementById('upload-text').value);
