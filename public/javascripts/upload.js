@@ -278,8 +278,8 @@ function submitForm() {
   };
 
   xhr.onreadystatechange = function () {
-    console.log('readyState ' + xhr.readyState);
-    console.log('status ' + xhr.status);
+    // console.log('readyState ' + xhr.readyState);
+    // console.log('status ' + xhr.status);
     if ((xhr.readyState == 4) && (xhr.status == 200)){
       // var disposition = xhr.getResponseHeader('Content-Disposition');
       // disposition = decodeURIComponent(disposition);
@@ -318,16 +318,16 @@ function submitForm() {
   }
 
   xhr.open('POST', urlUpload, true);
-  console.log('POST opened');
+  // console.log('POST opened');
   if (type == 'text') {
-    console.log('set text');
+    // console.log('set text');
     // xhr.setRequestHeader('Content-Type', 'application/www-x-form-urlencoded')
     try {
       xhr.setRequestHeader('Content-Type', 'text/plain')
     } catch (e_) {
       console.error(e_);
     }
-    console.log('set header ok');
+    // console.log('set header ok');
     // console.log(xhr);
     var t = 't';
     try {
@@ -336,12 +336,12 @@ function submitForm() {
       t = ob('upload-text').value
       console.log(e_);
     }
-    console.log('fd ' + t);
-    console.log('textarea value ' + ob('upload-text').value);
-    console.log('textarea HTML ' + ob.innerHTML);
+    // console.log('fd ' + t);
+    // console.log('textarea value ' + ob('upload-text').value);
+    // console.log('textarea HTML ' + ob.innerHTML);
     xhr.send(t);
   } else {
-    console.log('set file');
+    // console.log('set file');
     xhr.send(fd);
   }
   // xhr.open('POST', `/upload`, true);
