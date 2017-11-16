@@ -57,8 +57,13 @@ function load(id) {
     success: function (res) {
       // console.log(res)
       res = JSON.parse(res);
-      $('#download-text').val(res.text)
-      $('#download-text').text(res.text)
+      var oldText = $('#download-text').val()
+      // console.log(oldText);
+      if (!oldText || oldText.localeCompare(res.text)) {
+        $('#download-text').val(res.text)
+        $('#download-text').text(res.text)
+      }
+      
       if (dtextResizeHandler) {
         dtextResizeHandler();
       }
